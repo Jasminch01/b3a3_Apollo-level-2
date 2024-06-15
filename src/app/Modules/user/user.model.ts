@@ -1,0 +1,45 @@
+import mongoose from "mongoose";
+import Tuser from "./user.interface";
+
+const userSchema = new mongoose.Schema<Tuser>(
+  {
+    name: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    email: {
+      type: String,
+      required: [true, 'email is required'],
+      unique: true,
+      trim: true,
+      match: [/.+\@.+\..+/, "Please fill a valid email address"],
+    },
+    password: {
+      type: String,
+      required: true,
+      minlength: 8,
+    },
+    phone: {
+      type: String,
+      required: true,
+      match: [/^\d{10}$/, "Please fill a valid 10-digit phone number"],
+    },
+    address: {
+      type: String,
+      required: true,
+    },
+    role: {
+      type: String,
+      required: true,
+      enum: ["admin", "user"],
+      default: "user",
+    },
+  },
+  {
+    //default : createdAt updatedAt
+    timestamps: true,
+  }
+);
+
+export const User = mongoose.model("User", userSchema);
