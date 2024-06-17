@@ -5,6 +5,7 @@ import { TloginUser, Tuser } from "./user.interface";
 import { User } from "./user.model";
 import config from "../../config";
 import { createToken } from "./user.utils";
+import { JwtPayload } from "jsonwebtoken";
 
 const createUserDB = async (payload: Tuser) => {
   const user = await User.findOne({ email: payload?.email });
@@ -34,7 +35,7 @@ const userLogin = async (payload: TloginUser) => {
   }
 
   const jwtPayload = {
-    userId: isUserExist.id,
+    userEmail: isUserExist.email,
     role: isUserExist.role,
   };
 
@@ -53,7 +54,15 @@ const userLogin = async (payload: TloginUser) => {
   };
 };
 
+const getUserProfileDB = async (email: JwtPayload) => {
+  if (email) {
+    const result = await User.findOne({ email: email });
+    return result;
+  }
+};
+
 export const userService = {
   createUserDB,
   userLogin,
+  getUserProfileDB,
 };

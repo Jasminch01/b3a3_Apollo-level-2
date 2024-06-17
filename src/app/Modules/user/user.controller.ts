@@ -28,7 +28,21 @@ const LoginUser = catchAsync(async (req, res) => {
   });
 });
 
+const GetUserProfile = catchAsync(async (req, res) => {
+  const user= req.user;
+  const email = user.userEmail;
+  const result = await userService.getUserProfileDB(email)
+
+  sendResponse(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: "user retrive successfully",
+    data: result,
+  });
+});
+
 export const userController = {
   createUser,
   LoginUser,
+  GetUserProfile
 };
