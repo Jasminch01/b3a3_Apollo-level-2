@@ -1,4 +1,4 @@
-type Tuser ={
+export type Tuser ={
     name: string;
     email: string;
     password: string;
@@ -7,4 +7,8 @@ type Tuser ={
     role: string;
 }
 
-export default Tuser;
+export type TloginUser = {
+    email : string;
+    password : string;
+}
+

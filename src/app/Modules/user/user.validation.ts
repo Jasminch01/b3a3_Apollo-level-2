@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-const userValidationSchema = z.object({
+export const userValidationSchema = z.object({
   body: z.object({
     name: z.string(),
     email: z.string().email(),
@@ -10,5 +10,10 @@ const userValidationSchema = z.object({
     role: z.enum(["admin", "user"]),
   }),
 });
+export const loginUserValidationSchema = z.object({
+  body: z.object({
+    email: z.string().email(),
+    password: z.string().min(8),
+  }),
+});
 
-export default userValidationSchema;
