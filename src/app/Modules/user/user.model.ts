@@ -1,5 +1,7 @@
 import mongoose from "mongoose";
-import Tuser from "./user.interface";
+import bcrypt from "bcrypt";
+import { Tuser } from "./user.interface";
+import config from "../../config";
 
 const userSchema = new mongoose.Schema<Tuser>(
   {
@@ -10,7 +12,7 @@ const userSchema = new mongoose.Schema<Tuser>(
     },
     email: {
       type: String,
-      required: [true, 'email is required'],
+      required: [true, "email is required"],
       unique: true,
       trim: true,
       match: [/.+\@.+\..+/, "Please fill a valid email address"],
@@ -19,6 +21,7 @@ const userSchema = new mongoose.Schema<Tuser>(
       type: String,
       required: true,
       minlength: 8,
+      select: 0,
     },
     phone: {
       type: String,
@@ -42,4 +45,22 @@ const userSchema = new mongoose.Schema<Tuser>(
   }
 );
 
+userSchema.pre("save", async function (next) {
+  // eslint-disable-next-line @typescript-eslint/no-this-alias
+  const user = this; // doc
+  // hashing password and save into DB
+
+  user.password = await bcrypt.hash(
+    user.password,
+    Number(config.bcrypt_salt_rounds)
+  );
+
+  next();
+});
+
+// set '' after saving password
+userSchema.post("save", function (doc, next) {
+  doc.password = "";
+  next();
+});
 export const User = mongoose.model("User", userSchema);

@@ -7,7 +7,7 @@ export const userValidationSchema = z.object({
     password: z.string().min(8),
     phone: z.string().regex(/^\d{10}$/),
     address: z.string(),
-    role: z.enum(["admin", "user"]),
+    role: z.enum(["admin", "user"]).default('user'),
   }),
 });
 export const loginUserValidationSchema = z.object({
