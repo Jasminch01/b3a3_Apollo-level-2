@@ -29,9 +29,9 @@ const LoginUser = catchAsync(async (req, res) => {
 });
 
 const GetUserProfile = catchAsync(async (req, res) => {
-  const user= req.user;
+  const user = req.user;
   const email = user.userEmail;
-  const result = await userService.getUserProfileDB(email)
+  const result = await userService.getUserProfileDB(email);
 
   sendResponse(res, {
     success: true,
@@ -41,8 +41,22 @@ const GetUserProfile = catchAsync(async (req, res) => {
   });
 });
 
+const updateUser = catchAsync(async (req, res) => {
+  const user = req.user;
+  const email = user.userEmail;
+  const updateData = req.body;
+  const result = await userService.updateUserDB(email, updateData);
+  sendResponse(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: "user updated successfully",
+    data: result,
+  });
+});
+
 export const userController = {
   createUser,
   LoginUser,
-  GetUserProfile
+  GetUserProfile,
+  updateUser,
 };

@@ -10,5 +10,6 @@ const router = Router();
 router.post("/signup", validateRequestedData(userValidationSchema), userController.createUser);
 router.post("/login", validateRequestedData(loginUserValidationSchema), userController.LoginUser);
 router.get("/me", currentUser(), userController.GetUserProfile);
+router.put('/me', currentUser(), userController.updateUser)
 
 export const userRouter = router;

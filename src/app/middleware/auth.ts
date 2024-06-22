@@ -41,26 +41,33 @@ export const auth = (...requiredRoles: TUserRole[]) => {
 
 export const currentUser = () => {
   return catchAsync(async (req: Request, res: Response, next: NextFunction) => {
-    const token = req.headers.authorization;
-    // checking if the token is missing
+    const token = req.headers.authorization?.split(" ")[1];
+
+    // Check if the token is missing
     if (!token) {
       throw new AppError(httpStatus.UNAUTHORIZED, "You are not authorized!");
     }
+ 
+    // if the given token is valid
+    let decoded: JwtPayload;
+    try {
+      decoded = jwt.verify(
+        token,
+        config.jwt_access_secret as string
+      ) as JwtPayload;
+    } catch (err: any) {
+      throw new AppError(httpStatus.UNAUTHORIZED, "Invalid token!");
+    }
 
-    // checking if the given token is valid
-    const decoded = jwt.verify(
-      token,
-      config.jwt_access_secret as string
-    ) as JwtPayload;
+    const { userEmail } = decoded;
 
-    const { role, userEmail, iat } = decoded;
-
-    // checking if the user is exist
+    //if user exists
     const isUserExist = await User.findOne({ email: userEmail });
     if (!isUserExist) {
-      throw new AppError(httpStatus.NOT_FOUND, "This user is not found !");
+      throw new AppError(httpStatus.NOT_FOUND, "This user is not found!");
     }
-    req.user = decoded as JwtPayload;
+
+    req.user = decoded;
     next();
   });
 };
