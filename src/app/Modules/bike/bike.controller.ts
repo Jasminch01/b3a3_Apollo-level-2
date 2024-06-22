@@ -18,7 +18,7 @@ const getAllBikes = catchAsync(async (req, res) => {
   sendResponse(res, {
     success: true,
     statusCode: 200,
-    message: "Bikes retrive successfully",
+    message: "Bikes are retrived successfully",
     data: result,
   });
 });
@@ -30,7 +30,17 @@ const updateBike = catchAsync(async (req, res) => {
   sendResponse(res, {
     success: true,
     statusCode: 200,
-    message: "Bikes retrive successfully",
+    message: "Bikes updated successfully",
+    data: result,
+  });
+});
+const deleteBike = catchAsync(async (req, res) => {
+  const bikesId = req.params.id;
+  const result = await bikeServices.deleteBikeDB(bikesId);
+  sendResponse(res, {
+    success: true,
+    statusCode: 200,
+    message: "Bikes deleted successfully",
     data: result,
   });
 });
@@ -39,4 +49,5 @@ export const bikeController = {
   createBike,
   getAllBikes,
   updateBike,
+  deleteBike,
 };
