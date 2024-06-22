@@ -13,7 +13,30 @@ const createBike = catchAsync(async (req, res) => {
     data: result,
   });
 });
+const getAllBikes = catchAsync(async (req, res) => {
+  const result = await bikeServices.getAllBikesDB();
+  sendResponse(res, {
+    success: true,
+    statusCode: 200,
+    message: "Bikes retrive successfully",
+    data: result,
+  });
+});
+
+const updateBike = catchAsync(async (req, res) => {
+  const bikesId = req.params.id;
+  const bikeUpdates = req.body;
+  const result = await bikeServices.updateBikeDB(bikesId, bikeUpdates);
+  sendResponse(res, {
+    success: true,
+    statusCode: 200,
+    message: "Bikes retrive successfully",
+    data: result,
+  });
+});
 
 export const bikeController = {
   createBike,
+  getAllBikes,
+  updateBike,
 };

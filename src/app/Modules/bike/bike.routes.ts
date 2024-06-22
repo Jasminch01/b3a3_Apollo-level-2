@@ -12,5 +12,7 @@ router.post(
   validateRequestedData(bikeZodSchema),
   bikeController.createBike
 );
+router.get("/bikes", auth("admin"), bikeController.getAllBikes);
+router.put("/bikes/:id", auth("admin"), bikeController.updateBike);
 
 export const bikeRouter = router;
