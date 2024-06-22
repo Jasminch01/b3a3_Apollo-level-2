@@ -62,12 +62,14 @@ const getUserProfileDB = async (email: JwtPayload) => {
 };
 
 const updateUserDB = async (email: JwtPayload, updateData: Tuser) => {
-  const user = await User.findOneAndUpdate({email : email}, updateData);
+  const user = await User.findOneAndUpdate({ email: email }, updateData, {
+    new: true,
+    runValidators: true,
+  });
   if (!user) {
     throw new AppError(httpStatus.NOT_FOUND, "User not found");
   }
-
-  return user;
+  return user
 };
 
 export const userService = {
