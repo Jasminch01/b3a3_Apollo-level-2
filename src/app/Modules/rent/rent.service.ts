@@ -74,7 +74,18 @@ const returnBikeDB = async (rentalId: string) => {
   return rental;
 };
 
+const getAllRentalDB = async (email: string) => {
+  const user = await User.findOne({ email: email });
+  if (!user) {
+    throw new AppError(httpStatus.NOT_FOUND, "user not found");
+  }
+  const userId = user?._id;
+  const result = await Rental.find({userId : userId});
+  return result;
+};
+
 export const rentService = {
   createRentalDB,
   returnBikeDB,
+  getAllRentalDB,
 };

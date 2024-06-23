@@ -59,7 +59,6 @@ export const currentUser = () => {
     } catch (err: any) {
       throw new AppError(httpStatus.UNAUTHORIZED, "Invalid token!");
     }
-
     const { userEmail } = decoded;
 
     //if user exists

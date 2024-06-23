@@ -16,7 +16,7 @@ const createReantal = catchAsync(async (req, res) => {
 });
 const returnBike = catchAsync(async (req, res) => {
   const rentalId = req.params.id;
-  const result = await rentService.returnBikeDB(rentalId)
+  const result = await rentService.returnBikeDB(rentalId);
   sendResponse(res, {
     success: true,
     statusCode: 200,
@@ -24,7 +24,20 @@ const returnBike = catchAsync(async (req, res) => {
     data: result,
   });
 });
+
+const getAllRentalDB = catchAsync(async (req, res) => {
+  const user = req.user;
+  const email = user.userEmail;
+  const result = await rentService.getAllRentalDB(email);
+  sendResponse(res, {
+    success: true,
+    statusCode: 200,
+    message: "Rentals are retrived successfully",
+    data: result,
+  });
+});
 export const rentController = {
   createReantal,
   returnBike,
+  getAllRentalDB,
 };
