@@ -12,7 +12,7 @@ router.post(
   validateRequestedData(bikeZodSchema),
   bikeController.createBike
 );
-router.get("/bikes", auth("admin"), bikeController.getAllBikes);
+router.get("/bikes", bikeController.getAllBikes);
 router.put("/bikes/:id", auth("admin"), bikeController.updateBike);
 router.delete("/bikes/:id", auth("admin"), bikeController.deleteBike);
 
