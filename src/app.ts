@@ -10,12 +10,12 @@ app.use(express.json());
 app.use(cors());
 
 //application routes
-app.use('/api', router)
-app.use(globalErrorHandler)
-app.use(notFound)
+app.use("/api", router);
+app.use(globalErrorHandler);
 
 app.get("/", (req: Request, res: Response) => {
   res.send("server is online");
 });
+app.use(notFound);
 
 export default app;
