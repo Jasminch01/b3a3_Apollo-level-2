@@ -12,53 +12,45 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.bikeController = void 0;
+exports.rentController = void 0;
 const catchAsync_1 = __importDefault(require("../../utils/catchAsync"));
 const sendResponse_1 = __importDefault(require("../../utils/sendResponse"));
-const bike_service_1 = require("./bike.service");
-const createBike = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const bike = req.body;
-    const result = yield bike_service_1.bikeServices.createBikeDB(bike);
+const rent_service_1 = require("./rent.service");
+const createReantal = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const user = req.user;
+    const email = user.userEmail;
+    const payload = req.body;
+    const result = yield rent_service_1.rentService.createRentalDB(email, payload);
     (0, sendResponse_1.default)(res, {
         success: true,
         statusCode: 200,
-        message: "Bike added successfully",
+        message: "Rental created successfully",
         data: result,
     });
 }));
-const getAllBikes = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield bike_service_1.bikeServices.getAllBikesDB();
+const returnBike = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const rentalId = req.params.id;
+    const result = yield rent_service_1.rentService.returnBikeDB(rentalId);
     (0, sendResponse_1.default)(res, {
         success: true,
         statusCode: 200,
-        message: "Bikes are retrived successfully",
+        message: "Bike returned successfully",
         data: result,
     });
 }));
-const updateBike = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const bikesId = req.params.id;
-    const bikeUpdates = req.body;
-    const result = yield bike_service_1.bikeServices.updateBikeDB(bikesId, bikeUpdates);
+const getAllRentalDB = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const user = req.user;
+    const email = user.userEmail;
+    const result = yield rent_service_1.rentService.getAllRentalDB(email);
     (0, sendResponse_1.default)(res, {
         success: true,
         statusCode: 200,
-        message: "Bikes updated successfully",
+        message: "Rentals are retrived successfully",
         data: result,
     });
 }));
-const deleteBike = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const bikesId = req.params.id;
-    const result = yield bike_service_1.bikeServices.deleteBikeDB(bikesId);
-    (0, sendResponse_1.default)(res, {
-        success: true,
-        statusCode: 200,
-        message: "Bikes deleted successfully",
-        data: result,
-    });
-}));
-exports.bikeController = {
-    createBike,
-    getAllBikes,
-    updateBike,
-    deleteBike,
+exports.rentController = {
+    createReantal,
+    returnBike,
+    getAllRentalDB,
 };

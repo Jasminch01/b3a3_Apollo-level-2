@@ -1,0 +1,11 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.rentRouter = void 0;
+const express_1 = require("express");
+const auth_1 = require("../../middleware/auth");
+const rent_controller_1 = require("./rent.controller");
+const router = (0, express_1.Router)();
+router.post("/rentals", (0, auth_1.currentUser)(), rent_controller_1.rentController.createReantal);
+router.put("/rentals/:id/return", (0, auth_1.auth)("admin"), rent_controller_1.rentController.returnBike);
+router.get("/rentals", (0, auth_1.currentUser)(), rent_controller_1.rentController.getAllRentalDB);
+exports.rentRouter = router;
